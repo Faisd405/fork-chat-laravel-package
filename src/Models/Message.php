@@ -96,7 +96,9 @@ class Message extends BaseModel
         ]);
 
         if (Chat::broadcasts()) {
-            broadcast(new MessageWasSent($message))->toOthers();
+            $messageWasSent = config('musonza_chat.sent_message_event', MessageWasSent::class);
+            broadcast(new $messageWasSent($message))->toOthers();
+
         }
 
         $this->createNotifications($message);
